@@ -268,7 +268,8 @@ where
 
                         let (namespace, _) = key.into_parts();
                         Ok(basic_response(
-                            uri, headers, &storage, object, operation, size, namespace,
+                            uri, headers, &storage, object, operation, size,
+                            namespace,
                         )
                         .await)
                     }
