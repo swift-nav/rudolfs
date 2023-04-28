@@ -78,25 +78,25 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-  publish_crate:
-    name: Publish Crate
-    # Don't publish unless all the checks pass.
-    needs: [check, test, clippy, rustfmt]
-    # Only publish for tags
-    if: ${{ startsWith(github.event.ref, 'refs/tags/') }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v1
-
-      - name: cargo login
-        uses: actions-rs/cargo@v1
-        with:
-          command: login
-          args: ${{ secrets.CARGO_TOKEN }}
-
-      - name: publish
-        run: cargo publish --no-verify
+#  publish_crate:
+#    name: Publish Crate
+#    # Don't publish unless all the checks pass.
+#    needs: [check, test, clippy, rustfmt]
+#    # Only publish for tags
+#    if: ${{ startsWith(github.event.ref, 'refs/tags/') }}
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout sources
+#        uses: actions/checkout@v1
+#
+#      - name: cargo login
+#        uses: actions-rs/cargo@v1
+#        with:
+#          command: login
+#          args: ${{ secrets.CARGO_TOKEN }}
+#
+#      - name: publish
+#        run: cargo publish --no-verify
 
   docker:
     name: Push Docker Image
@@ -111,7 +111,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: jasonwhite0/rudolfs
+          images: silverjam/rudolfs
           tags: |
             type=ref,event=branch
             type=ref,event=pr
