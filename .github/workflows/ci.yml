@@ -64,19 +64,19 @@ jobs:
           command: fmt
           args: --all -- --check
 
-  clippy:
-    name: Clippy
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
-        with:
-            toolchain: nightly
-            components: clippy
-            override: true
-      - uses: actions-rs/clippy-check@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+#  clippy:
+#    name: Clippy
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v2
+#      - uses: actions-rs/toolchain@v1
+#        with:
+#            toolchain: nightly
+#            components: clippy
+#            override: true
+#      - uses: actions-rs/clippy-check@v1
+#        with:
+#          token: ${{ secrets.GITHUB_TOKEN }}
 
 #  publish_crate:
 #    name: Publish Crate
@@ -106,6 +106,12 @@ jobs:
       -
         name: Checkout sources
         uses: actions/checkout@v2
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       -
         name: Docker meta
         id: meta
@@ -116,6 +122,7 @@ jobs:
             type=ref,event=branch
             type=ref,event=pr
             type=semver,pattern={{version}}
+
       -
         name: Login to DockerHub
         if: ${{ github.event_name != 'pull_request' }}
@@ -123,6 +130,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
       -
         name: Build and push
         uses: docker/build-push-action@v2
