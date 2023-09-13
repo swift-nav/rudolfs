@@ -101,7 +101,7 @@ jobs:
   docker:
     name: Push Docker Image
     needs: [check, test]
-    runs-on: xxlarge
+    runs-on: 3xlarge
     steps:
       -
         name: Checkout sources
