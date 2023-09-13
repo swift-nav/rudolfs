@@ -101,7 +101,7 @@ jobs:
   docker:
     name: Push Docker Image
     needs: [check, test]
-    runs-on: ubuntu-latest
+    runs-on: xlarge
     steps:
       -
         name: Checkout sources
@@ -117,7 +117,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: silverjam/rudolfs
+          images: swiftnav/rudolfs
           tags: |
             type=ref,event=branch
             type=ref,event=pr
