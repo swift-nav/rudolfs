@@ -3,8 +3,7 @@ FROM public.ecr.aws/docker/library/rust:slim-buster AS build
 ENV DEBIAN_FRONTEND=noninteractive
 RUN \
 	apt-get update && \
-	apt-get -y install ca-certificates && \
-	rustup target add ${CARGO_BUILD_TARGET}
+	apt-get -y install ca-certificates
 
 ENV PKG_CONFIG_ALLOW_CROSS=1
 
@@ -34,6 +33,7 @@ VOLUME ["/data"]
 
 COPY --from=build /tini /tini
 COPY --from=build /build/ /
+COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crttt
 
 ENTRYPOINT ["/tini", "--", "/rudolfs"]
 CMD ["--cache-dir", "/data"]
